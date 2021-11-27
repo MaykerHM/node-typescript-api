@@ -179,15 +179,15 @@ yarn add -D @types/module-alias
 <li>Criar pasta util no src e adicionar arquivo module-alias.ts
 
 ```ts
-import * as path from 'path'
-import moduleAlias from 'module-alias'
+import * as path from 'path';
+import moduleAlias from 'module-alias';
 
-const files = path.resolve(__dirname, '../..')
+const files = path.resolve(__dirname, '../..');
 
 moduleAlias.addAliases({
   '@src': path.join(files, 'src'),
   '@test': path.join(files, 'test'),
-})
+});
 ```
 
 <br>
@@ -249,7 +249,7 @@ yarn add -D ts-node-dev
 ```
 
 <br>
-<h2>Configurar Jest</h2>
+<h2>Configurar teste com Jest</h2>
 <hr>
 <li>Adicionar jest para typescript</li>
 
@@ -260,8 +260,8 @@ yarn add -D jest ts-jest @types/jest
 <li>Criar arquivo jest.config.js na root</li>
 
 ```js
-const { resolve } = require('path')
-const root = resolve(__dirname)
+const { resolve } = require('path');
+const root = resolve(__dirname);
 module.exports = {
   rootDir: root,
   displayName: 'root-tests',
@@ -273,15 +273,15 @@ module.exports = {
     '@src/(.*)': '<rootDir>/src/$1',
     '@test/(.*)': '<rootDir>/test/$1',
   },
-}
+};
 ```
 
 <li>Criar arquivo jest.config.js na pasta test</li>
 
 ```js
-const { resolve } = require('path')
-const root = resolve(__dirname, '..')
-const rootConfig = require(`${root}/jest.config.js`)
+const { resolve } = require('path');
+const root = resolve(__dirname, '..');
+const rootConfig = require(`${root}/jest.config.js`);
 
 module.exports = {
   ...rootConfig,
@@ -291,7 +291,7 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/test/jest-setup.ts'],
     testMatch: ['<rootDir>/test/**/*.test.ts'],
   },
-}
+};
 ```
 
 <li>Criar arquivo jest-setup.ts na pasta test</li>
@@ -313,5 +313,68 @@ yarn add -D supertest @types/supertest
     "test:functional": "jest --projects ./test --runInBand",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix"
+  },
+```
+
+<li>Adicionar supertest</li>
+
+```
+yarn add supertest @types/supertest
+```
+
+<li>Criar arquivo globals.d.ts na pasta test:</li>
+
+```ts
+declare var testRequest: import('supertest').SuperTest<
+  import('supertest').Test
+>;
+```
+
+<li>Utilizar global.testRequest no lugar de supertest(app) no arquivo jest-setup.ts</li>
+
+```ts
+import { SetupServer } from '@src/server';
+import supertest from 'supertest';
+
+beforeAll(() => {
+  const server = new SetupServer();
+  server.init();
+  global.testRequest = supertest(server.getApp());
+});
+```
+
+<br>
+<h2>Configurar Prettier</h2>
+<hr>
+<li>Adicionar prettier</li>
+
+```
+yarn add -D prettier
+```
+
+<li>Criar arquivo .prettierrc na root</li>
+
+```json
+{
+  "trailingComma": "es5",
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": true
+}
+```
+
+  <li>Adicionar script style:check e style:fix no package.json</li>
+
+```json
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "start:dev": "ts-node-dev 'src/index.ts'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:functional": "jest --projects ./test --runInBand",
+    "lint": "eslint ./src ./test --ext .ts",
+    "lint:fix": "eslint ./src ./test --ext .ts --fix",
+    "style:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+    "style:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
 ```
