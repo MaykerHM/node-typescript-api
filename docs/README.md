@@ -227,7 +227,7 @@ yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
 <br>
-<h2>Configurar Typescript em dev com ts-node-dev</h2>
+<h2>Configurar Typescript em dev com ts-node-dev (baseado em ts-node)</h2>
 <hr>
 <li>Adicionar ts-node-dev</li>
 
