@@ -1,6 +1,8 @@
-<h1>Criar Projeto Typescript: Setup Inicial</h1>
+<h1> Criar Projeto Typescript: Setup Inicial</h1>
+<h4>Projeto baseado no curso: <a href="https://youtube.com/playlist?list=PLz_YTBuxtxt6_Zf1h-qzNsvVt46H8ziKh">Do zero a produção: Aprenda a contruir uma API NodeJS com Typescript</a></h4>
+<hr>
 
-<h2>Iniciando Projeto</h2>
+<h2> Iniciando Projeto</h2>
 <hr>
 <li> Criar pasta do projeto</li>
 
@@ -14,16 +16,19 @@ mkdir <projeto>
 cd <projeto>
 ```
 
+<li> Criar pastas src e test na root do projeto</li>
+<li> Criar arquivo index.ts na pasta src</li>
+
 <br>
-<h2>Configurar Git</h2>
+<h2> Configurar Git</h2>
 <hr>
-<li>Iniciar git</li>
+<li> Iniciar git</li>
 
 ```
 git init
 ```
 
-<li> Adicionar arquivo .gitignore</li>
+<li> Criar arquivo .gitignore na root</li>
 
 ```
 # Logs
@@ -118,23 +123,71 @@ npm init
 <br>
 <h2>Configurar Typescript</h2>
 <hr>
+<li>Adicionar typescript</li>
 
 ```
 yarn add -D typescript
 yarn add -D @types/node
 ```
 
-<li> Criar pastas src e test na root do projeto</li>
-<li> Criar arquivo tsconfig.json</li>
-<li> Adicionar module-alias e types</li>
+<li> Criar arquivo tsconfig.json na root</li>
+
+```json
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "lib": ["es2019"],
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@test/*": ["./test/*"]
+    },
+    "rootDirs": ["./src", "./test"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "exclude": ["./node_modules/*", "dist"]
+}
+```
 
 <br>
 <h2>Configurar Module-Alias</h2>
 <hr>
+<li>Adicionar module-alias</li>
 
 ```
 yarn add module-alias
 yarn add -D @types/module-alias
+```
+
+<li>Criar pasta util no src e adicionar arquivo module-alias.ts
+
+```ts
+import * as path from 'path'
+import moduleAlias from 'module-alias'
+
+const files = path.resolve(__dirname, '../..')
+
+moduleAlias.addAliases({
+  '@src': path.join(files, 'src'),
+  '@test': path.join(files, 'test'),
+})
 ```
 
 <br>
@@ -146,9 +199,9 @@ yarn add -D @types/module-alias
 yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
-<li>Adicionar arquivo .eslintrc</li>
+<li>Criar arquivo .eslintrc na root</li>
 
-```js
+```json
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
@@ -163,7 +216,7 @@ yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
 <li>Adicionar script lint e lint:fix no package.json</li>
 
-```js
+```json
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/src/index.js",
@@ -182,9 +235,9 @@ yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 yarn add -D ts-node-dev
 ```
 
-<li>Adicionar script start:dev</li>
+<li>Adicionar script start:dev no package.json</li>
 
-```js
+```json
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/src/index.js",
@@ -192,5 +245,73 @@ yarn add -D ts-node-dev
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
+<br>
+<h2>Configurar Jest</h2>
+<hr>
+<li>Adicionar jest para typescript</li>
+
+```
+yarn add -D jest ts-jest @types/jest
+```
+
+<li>Criar arquivo jest.config.js na root</li>
+
+```js
+const { resolve } = require('path')
+const root = resolve(__dirname)
+module.exports = {
+  rootDir: root,
+  displayName: 'root-tests',
+  testMatch: ['<rootDir>/src/**/*.test.ts'],
+  testEnvironment: 'node',
+  clearMocks: true,
+  preset: 'ts-jest',
+  moduleNameMapper: {
+    '@src/(.*)': '<rootDir>/src/$1',
+    '@test/(.*)': '<rootDir>/test/$1',
+  },
+}
+```
+
+<li>Criar arquivo jest.config.js na pasta test</li>
+
+```js
+const { resolve } = require('path')
+const root = resolve(__dirname, '..')
+const rootConfig = require(`${root}/jest.config.js`)
+
+module.exports = {
+  ...rootConfig,
+  ...{
+    rootDir: root,
+    displayName: 'end2end-tests',
+    setupFilesAfterEnv: ['<rootDir>/test/jest-setup.ts'],
+    testMatch: ['<rootDir>/test/**/*.test.ts'],
+  },
+}
+```
+
+<li>Criar arquivo jest-setup.ts na pasta test</li>
+<li>Adicionar supertest</li>
+
+```
+yarn add -D supertest @types/supertest
+```
+
+<li>Criar pasta functional na pasta test, onde conterá o teste final</li>
+<li>Adicionar script test:functional no package.json</li>
+
+```json
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "start:dev": "ts-node-dev 'src/index.ts'",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:functional": "jest --projects ./test --runInBand",
+    "lint": "eslint ./src ./test --ext .ts",
+    "lint:fix": "eslint ./src ./test --ext .ts --fix"
   },
 ```
