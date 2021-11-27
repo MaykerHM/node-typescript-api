@@ -1,4 +1,7 @@
-<h1>Setup Inicial</h1> 
+<h1>Criar Projeto Typescript: Setup Inicial</h1>
+
+<h2>Iniciando Projeto</h2>
+<hr>
 <li> Criar pasta do projeto</li>
 
 ```
@@ -11,6 +14,7 @@ mkdir <projeto>
 cd <projeto>
 ```
 
+<br>
 <h2>Configurar Git</h2>
 <hr>
 <li>Iniciar git</li>
@@ -101,6 +105,9 @@ git remote add origin https://github.com/username/repositorio.git
 git push -u origin master
 ```
 
+<br>
+<h2>Iniciar NPM</h2>
+<hr>
 <li>Criar package.json</li>
 
 ```
@@ -108,6 +115,9 @@ npm init
 ```
 
 <li> Configurar package.json (ex.: versão, autor, licença e etc.)</li>
+<br>
+<h2>Configurar Typescript</h2>
+<hr>
 
 ```
 yarn add -D typescript
@@ -118,11 +128,16 @@ yarn add -D @types/node
 <li> Criar arquivo tsconfig.json</li>
 <li> Adicionar module-alias e types</li>
 
+<br>
+<h2>Configurar Module-Alias</h2>
+<hr>
+
 ```
 yarn add module-alias
 yarn add -D @types/module-alias
 ```
 
+<br>
 <h2>Configurar ESLINT</h2>
 <hr>
 <li>Adicionar eslint</li>
@@ -133,7 +148,7 @@ yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 
 <li>Adicionar arquivo .eslintrc</li>
 
-```
+```js
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
@@ -144,4 +159,38 @@ yarn add -D eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
     "plugin:@typescript-eslint/recommended"
   ]
 }
+```
+
+<li>Adicionar script lint e lint:fix no package.json</li>
+
+```js
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "lint": "eslint ./src ./test --ext .ts",
+    "lint:fix": "eslint ./src ./test --ext .ts --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+```
+
+<br>
+<h2>Configurar Typescript em dev com ts-node-dev</h2>
+<hr>
+<li>Adicionar ts-node-dev</li>
+
+```
+yarn add -D ts-node-dev
+```
+
+<li>Adicionar script start:dev</li>
+
+```js
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "start:dev": "ts-node-dev 'src/index.ts'",
+    "lint": "eslint ./src ./test --ext .ts",
+    "lint:fix": "eslint ./src ./test --ext .ts --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
 ```
