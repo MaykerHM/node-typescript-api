@@ -20,7 +20,7 @@ cd <projeto>
 <li> Criar arquivo index.ts na pasta src</li>
 
 <br>
-<h2> Configurar Git</h2>
+<h2> Configurar Git :octocat:</h2>
 <hr>
 <li> Iniciar git</li>
 
