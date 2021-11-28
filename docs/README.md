@@ -302,7 +302,7 @@ yarn add -D supertest @types/supertest
 ```
 
 <li>Criar pasta functional na pasta test, onde conterá o teste final</li>
-<li>Adicionar script test:functional no package.json</li>
+<li>Adicionar script test:functional e test:unit no package.json</li>
 
 ```json
   "scripts": {
@@ -311,6 +311,7 @@ yarn add -D supertest @types/supertest
     "start:dev": "ts-node-dev 'src/index.ts'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:functional": "jest --projects ./test --runInBand",
+    "test:unit": "jest",
     "lint": "eslint ./src ./test --ext .ts",
     "lint:fix": "eslint ./src ./test --ext .ts --fix"
   },
