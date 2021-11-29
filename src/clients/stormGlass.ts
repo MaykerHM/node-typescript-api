@@ -44,7 +44,7 @@ export class StormGlass {
     );
   }
 
-  private normalizaResponse(
+  private normalizeResponse(
     points: StormGlassForecastResponse
   ): ForecastPoint[] {
     return points.hours.filter(this.isValidPoint.bind(this)).map((point) => ({
