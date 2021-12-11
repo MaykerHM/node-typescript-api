@@ -1,4 +1,4 @@
-<h1> Criar Projeto Typescript: Setup Inicial</h1>
+<h1> Criar Projeto Typescript com TDD: Setup Inicial</h1>
 <h4>Projeto baseado no curso: <a href="https://youtube.com/playlist?list=PLz_YTBuxtxt6_Zf1h-qzNsvVt46H8ziKh">Do zero a produção: Aprenda a contruir uma API NodeJS com Typescript</a></h4>
 <hr>
 
