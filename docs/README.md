@@ -379,3 +379,41 @@ yarn add -D prettier
     "style:fix": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\""
   },
 ```
+
+<br>
+<h2>Adicionar configuração dinâmica com node-config</h2>
+<hr>
+<li>Adicionar config</li>
+
+```
+yarn add config
+yarn add -D config @types/config
+```
+
+<li>Criar pasta config na root</li>
+<li>Adicionar arquivos default.json e test.json na pasta config, conforme exemplo abaixo:</li>
+
+```js
+// default.json
+{
+  "App": {
+    "resources": {
+      "StormGlass": {
+        "apiUrl": "https://api.stormglass.io/v2",
+        "apiToken": "do-not-hard-code"
+      }
+    }
+  }
+}
+
+// test.json
+{
+  "App": {
+    "resources": {
+      "StormGlass": {
+        "apiToken": "test-token"
+      }
+    }
+  }
+}
+```
